@@ -1,0 +1,31 @@
+{
+  "name": "grunt-docs-archieml",
+  "description": "Generate JSON file from Google Doc with ArchieML",
+  "version": "0.0.1",
+  "homepage": "https://github.com/luciovilla/grunt-docs-archieml",
+  "author": {
+    "name": "Lucio Villa",
+    "email": "lucio310@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/luciovilla/grunt-docs-archieml.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "archieml",
+    "grunt",
+    "aml",
+    "google",
+    "drive",
+    "json"
+  ],
+  "dependencies": {
+    "archieml": "^0.3.1",
+    "async": "^2.2.0",
+    "googleapis": "^16.0.0",
+    "grunt": "~1.0.0",
+    "html-entities": "^1.2.0",
+    "htmlparser2": "^3.9.0"
+  }
+}
