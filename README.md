@@ -34,8 +34,8 @@ b. Click on `DRIVE API` and if it’s not enabled just click on `ENABLE`
 
 ### Setup
 Grab Google Doc ID and paste into provided `project.json` file or your own. If you have your own, make sure to update the `docsID` variable in the `Gruntfile.js` with the correct path to your `project.json` file.
->With the Google Doc open, go to File > Publish to web, click on `PUBLISH` under the Link section and copy the ID from the URL. The ID is in between the ‘d’ and ‘pub’ part of the URL. See below for example. Marked in red is the Google Doc ID:
-https://docs.google.com/document/d/`1phiDD07FGcnApHk93xhLaWfbTRm9LhTmQHs8acsagj0`/pub 
+>With the Google Doc open, go to File > Publish to web, click on `PUBLISH` under the Link section and copy the ID from the URL. The ID is in between the ‘d’ and ‘pub’ part of the URL. See below for example. Below is a sample URL and the Google Doc ID starts wit the number one:
+https://docs.google.com/document/d/1phiDD07FGcnApHk93xhLaWfbTRm9LhTmQHs8acsagj0/pub 
 
 ### Running
 Run the following command and the JSON file will be in the the `json` directory called `text.json`
