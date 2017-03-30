@@ -1,11 +1,3 @@
-// auth.json file with secrets
-// Recommend saving variables in environment
-var auth = require('./auth.json');
-
-// Google Doc ID from project.json file
-// If you already have one just add doc_id variable to it and change the path to your project.json file
-var docsID = require('./project.json').doc_id;
-
 var async = require("async");
 var archieml = require('archieml');
 var htmlparser = require('htmlparser2');
@@ -13,27 +5,42 @@ var Entities = require('html-entities').AllHtmlEntities;
 var url = require('url');
 var google = require('googleapis');
 
+var lowerCase = function(str) {
+  return str.replace(/\s+/g, '_').toLowerCase();
+};
+
+var credentialsPath = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + '/.credentials.json';
 
 module.exports = function(grunt) {
 
-  grunt.registerTask('archieml', 'Parses Google Doc and downloads as JSON', function() {
+  grunt.registerTask('gdocs', 'Parses Google Doc and downloads as JSON', function() {
 
-    if(!auth.client_id || !auth.client_secret) {
+    var options = this.options({
+      credentials: (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + '/.credentials.json',
+      docsID: '',
+      dest: 'json'
+    });
+
+    var credentials = grunt.file.readJSON(options.credentials);
+  
+    if(!credentials.client_id || !credentials.client_secret) {
       throw new Error('Missing client_id or client_secret');
     };
+
+    if(!options.docsID) {
+      throw new Error('Missing Google Doc ID');
+    };
+
     var OAuth2 = google.auth.OAuth2;
-    var redirectUrls = [''];
-    if(auth.redirect_urls && auth.redirect_urls[0]) {
-      redirectUrls = auth.redirect_urls[0];
-    }
-    oauth2Client = new OAuth2(auth.client_id, auth.client_secret, redirectUrls);
+
+    oauth2Client = new OAuth2(credentials.client_id, credentials.client_secret);
     gDrive = google.drive({ version: 'v3', auth: oauth2Client });
-    oauth2Client.setCredentials(auth.oAuthTokens);
+    oauth2Client.setCredentials(credentials.oAuthTokens);
 
     var done = this.async();
-  
-    gDrive.files.export({ fileId:docsID, mimeType: 'text/html'}, function (err, docHtml) {
 
+    gDrive.files.export({ fileId:options.docsID, mimeType: 'text/html'}, function (err, docHtml) {
+     
       var handler = new htmlparser.DomHandler(function (error, dom) {
         var tagHandlers = {
           _base: function (tag) {
@@ -91,9 +98,14 @@ module.exports = function(grunt) {
         parsedText = parsedText.replace(/<[^<>]*>/g, function (match) {
           return match.replace(/”|“/g, '"').replace(/‘|’/g, "'");
         });
-
+  
         var parsed = archieml.load(parsedText);
-        grunt.file.write('json/text.json',JSON.stringify(parsed, null, 2));
+
+        gDrive.files.get({ fileId:options.docsID}, function (err, doc) {
+          var doc_title = doc.name;
+          grunt.file.write(options.dest + '/' + lowerCase(doc_title) + '.json', JSON.stringify(parsed, null, 2));
+        });
+
       });
 
       var parser = new htmlparser.Parser(handler);

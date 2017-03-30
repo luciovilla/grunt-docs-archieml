@@ -1,7 +1,7 @@
 {
   "name": "grunt-docs-archieml",
   "description": "Generate JSON file from Google Doc with ArchieML",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/luciovilla/grunt-docs-archieml",
   "author": {
     "name": "Lucio Villa",
