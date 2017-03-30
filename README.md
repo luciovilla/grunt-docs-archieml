@@ -56,10 +56,13 @@ grunt.initConfig({
   },
 });
 ```
->>> Default settings:
- `credentials` defaults to your home folder and will look for a .credentials.json file
- `docsID` has no default
- `dest` defaults to a directory named json
+Default settings:
+
+`credentials` defaults to your home folder and will look for a .credentials.json file
+
+`docsID` has no default
+
+`dest` defaults to a directory named json
 
 ### Running
 ```
